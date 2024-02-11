@@ -182,25 +182,58 @@ def q_3_a(avg_stim_res):
     
     return fig, ax, pca_res
 
-def q_3_b(avg_stim_res):
-    A = avg_stim_res.copy().T
-    fig, ax, _ = q_3_a(avg_stim_res=A)
-    ttl = fig._suptitle.get_text()
-    ttl = ttl.replace('PCA', 'PCA (Transposed Input)')
-    ttl = ttl.replace('Q3A', 'Q3B')
-    fig.suptitle(ttl)
-    return fig, ax
-
-def q_3_c(avg_stim_res):
-    tsne = TSNE(n_components=2)
-    normalized_avg_stim_res = zscore(avg_stim_res, axis=1)
-    tsne_res = tsne.fit_transform(normalized_avg_stim_res)
+def q_3_b():
+    avg_stim_res = q_1_d(dff, stimuli)
+    trasposed_avg_stim_res = avg_stim_res.copy().T
+    zscored_trasposed_avg_stim_res = zscore(trasposed_avg_stim_res, axis=1)
+    pca = PCA(n_components=2)
+    pca_res = pca.fit_transform(zscored_trasposed_avg_stim_res)
 
     fig, ax = plt.subplots()
-    ax = spatial_plot_helper(ax, tsne_res[:, 0], tsne_res[:, 1], avg_stim_res, stimuli)
+
+    cmap = plt.get_cmap('plasma')
+    norm = Normalize(vmin=-75, vmax=75)
+    sm = ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+
+    ax.scatter(
+        pca_res[:, 0], pca_res[:, 1], 
+        c=stimuli[:, 0].astype(int), 
+        cmap=cmap, norm=norm, s=10
+    )
+
+    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
+    cbar.set_ticks(np.arange(-75, 76, 15))
+    ax.set_xlabel('PC1')
+    ax.set_ylabel('PC2')
+    ttl = f"Q3B - Spatial Map of PCA (Transposed Input)\n"
+    ttl += f"PC1: {(100 * pca.explained_variance_ratio_[0]):.2f}%, "
+    ttl += f"PC2: {(100 * pca.explained_variance_ratio_[1]):.2f}%"
+    fig.suptitle(ttl)
+
+    return fig, ax
+
+def q_3_c():
+    avg_stim_res = q_1_d(dff, stimuli)
+    trasposed_avg_stim_res = avg_stim_res.copy().T
+    zscored_trasposed_avg_stim_res = zscore(trasposed_avg_stim_res, axis=1)
+    tsne = TSNE(n_components=2)
+    tnse_res = tsne.fit_transform(zscored_trasposed_avg_stim_res)
+    cmap = plt.get_cmap('plasma')
+    norm = Normalize(vmin=-75, vmax=75)
+    sm = ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+    fig, ax = plt.subplots()
+    ax.scatter(
+        tnse_res[:, 0], tnse_res[:, 1], 
+        c=stimuli[:, 0].astype(int), cmap=cmap, norm=norm, s=30,
+        edgecolors='k', linewidths=0.5, alpha=0.8)
+    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
+    cbar.set_ticks(np.arange(-75, 76, 15))
     ax.set_xlabel('tSNE axis 1')
     ax.set_ylabel('tSNE axis 2')
     fig.suptitle(f'Q3C - Spatial Map of tSNE 2D Space')
+
     return fig, ax
 
 def q_4_a_N_b(
@@ -269,54 +302,7 @@ def q_4_a_N_b(
 if __name__ == '__main__':
     dff, centers, stimuli = set_data_globaly()
     
-    avg_stim_res = q_1_d(dff, stimuli)
-    trasposed_avg_stim_res = avg_stim_res.copy().T
-    zscored_trasposed_avg_stim_res = zscore(trasposed_avg_stim_res, axis=1)
-    pca = PCA(n_components=2)
-    pca_res = pca.fit_transform(zscored_trasposed_avg_stim_res)
-
-    fig, ax = plt.subplots()
-    # ax = spatial_plot_helper(ax, pca_res[:, 0], pca_res[:, 1], avg_stim_res, stimuli)
-
-    print(f'pca_res.shape: {pca_res.shape}')
-    
-    cmap = plt.get_cmap('plasma')
-    neuron_number = [i for i in range(avg_stim_res.shape[0])]
-    norm = Normalize(vmin=-75, vmax=75)
-    sm = ScalarMappable(cmap=cmap, norm=norm)
-    sm.set_array([])
-
-    ax.scatter(
-        pca_res[:, 0], pca_res[:, 1], 
-        c=stimuli[:, 0].astype(int), 
-        cmap=cmap, norm=norm, s=10
-    )
-
-    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
-
-    plt.show()
-
-    #Q3C
-    stim_type = get_prefered_stim_per_n(avg_stim_res)
-    tsne = TSNE(n_components=2)
-    transformed3 = tsne.fit_transform(zscored_trasposed_avg_stim_res)
-    cmap = plt.get_cmap('YlOrRd')
-    norm = Normalize(vmin=-75, vmax=75)
-    sm = ScalarMappable(cmap=cmap, norm=norm)
-    sm.set_array([])
-    fig, ax = plt.subplots()
-    ax.scatter(transformed3[:, 0], transformed3[:, 1], c=stimuli[:, 0].astype(int), cmap=cmap, norm=norm, s=50,
-            edgecolors='k', linewidths=0.5, alpha=0.8)
-    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
-    cbar.set_ticks([n for n in range(-75,76,15)])
-    # cbar.set_ticklabels(stim_type)
-    plt.xlabel('tSNE axis 1')
-    plt.ylabel('tSNE axis 2')
-    plt.title(f'Data in a 2D tSNE space')
-    plt.show()
-
-    exit()
-    # # Q1    
+    # Q1    
     fig1a, axs1a = q_1_a(ddf=dff)
     plt.show()
     
@@ -343,10 +329,10 @@ if __name__ == '__main__':
     fig3a, ax3, pca_res = q_3_a(avg_stim_res)
     plt.show()  
 
-    fig3b, ax3b = q_3_b(avg_stim_res)
+    fig3b, ax3b = q_3_b()
     plt.show()
     
-    fig3c, ax3c = q_3_c(avg_stim_res)
+    fig3c, ax3c = q_3_c()
     plt.show()
 
     # Q4
