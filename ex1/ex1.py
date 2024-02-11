@@ -202,7 +202,7 @@ def q_3_b():
         cmap=cmap, norm=norm, s=10
     )
 
-    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
+    cbar = plt.colorbar(sm, ax=ax, label='Azimuth (degrees)')
     cbar.set_ticks(np.arange(-75, 76, 15))
     ax.set_xlabel('PC1')
     ax.set_ylabel('PC2')
@@ -228,7 +228,7 @@ def q_3_c():
         tnse_res[:, 0], tnse_res[:, 1], 
         c=stimuli[:, 0].astype(int), cmap=cmap, norm=norm, s=30,
         edgecolors='k', linewidths=0.5, alpha=0.8)
-    cbar = plt.colorbar(sm, ax=ax, label='Stim orientation')
+    cbar = plt.colorbar(sm, ax=ax, label='Azimuth (degrees)')
     cbar.set_ticks(np.arange(-75, 76, 15))
     ax.set_xlabel('tSNE axis 1')
     ax.set_ylabel('tSNE axis 2')

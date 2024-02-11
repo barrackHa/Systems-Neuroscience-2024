@@ -109,7 +109,7 @@ Barak Haim
 \end_layout
 
 \begin_layout Date
-10/02/2024
+11/02/2024
 \end_layout
 
 \begin_layout Standard
@@ -280,7 +280,7 @@ It looks generally the fish is more sensitive to stimuli for the far ends
 
 \begin_layout Paragraph
 We can see clusters of neurons with similar turning cures.
- Maybe this is due to Hebbian learing - neurons which fire together wire
+ Maybe this is due to Hebbian learning - neurons which fire together wire
  together - keeping them close by is more efficient energetically and keeps
  latency at it's minimum.
 \end_layout
@@ -353,13 +353,18 @@ V
 \begin_layout Paragraph
 Here we have the transposed matrix A from the previous question, i.e.
  rows of stimuli and columns of neurons.
- here the first 2 PCs represent the first 2 spanning vectors of the neuronal
- space which represents stimuli.
- Here, as opposed to the previous subsection, we see how the stimuli are
- represented in the neural space.
- By the color classification we can see there's no clear separation of stimuli
- in the neuronal space.
- 
+ This is a representation of the different stimuli by variance in the neuronal
+ space.
+ Again, we see the distinct 
+\begin_inset Quotes eld
+\end_inset
+
+V
+\begin_inset Quotes erd
+\end_inset
+
+ shape and how proximity in the neuronal 2D PC space is correlated with
+ closeness to stimuli type.
 \end_layout
 
 \begin_layout Subsection
@@ -377,8 +382,34 @@ Here we have the transposed matrix A from the previous question, i.e.
 
 \end_layout
 
+\begin_layout Paragraph
+Here we see the data spanned on an arc.
+ Again, proximity in the 2D tNSE space is correlated with closeness to stimuli
+ type.
+ All in all, pretty similar to 3B.
+ In general, tNSE is more robust to outliers, is more suitable for non-linearly
+ separable data and better at preserving distances.
+ In the general case, I hypothesize tNSE would be better for non-linearly
+ separable data.
+ 
+\end_layout
+
 \begin_layout Subsection
 3.d
+\end_layout
+
+\begin_layout Paragraph
+It seems like a single neuron may have 
+\begin_inset Quotes eld
+\end_inset
+
+preferences
+\begin_inset Quotes erd
+\end_inset
+
+ with regards to stimulus, however, in order to understand how stimuli are
+ represented, we must look at the network level.
+ 
 \end_layout
 
 \begin_layout Section
