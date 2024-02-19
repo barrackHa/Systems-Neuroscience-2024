@@ -2,6 +2,8 @@ figs/
 *.lyx~
 *.lyx#
 *.mat
+*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
